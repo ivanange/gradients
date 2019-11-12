@@ -79,7 +79,7 @@
             right: 50px;
             font-size: 40px;
             background-color: transparent;
-            display: inline-block;
+            display: in$line-block;
             padding: 10px;
             color: white;
 
@@ -100,8 +100,26 @@
 
 
     <div class="body">
-        <?php exec("python generate-html.py"); 
-         include "content.php"; ?>
+        <?php 
+	$gradient = "";
+	$lines = file('gradients.txt', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+	foreach ($lines as $line_num => $line) {
+		$line = trim($line);
+		
+		if( strrpos($line, ";" ) ) {
+			$line = str_replace(";", "", $line );
+			$gradient .= $line;
+			echo "<div class='gradient' clip-data=\"" .$gradient."\" style = \" background-image:".$gradient.";\" ><span   class='info full' >Fullscreen</span> </div>";
+			$gradient = "";
+		}
+		
+		else {
+			$gradient .= $line;
+		}
+		
+	}
+ ?>
     </div>
     <div class="alert info"> Copied ! </div>
     <textarea id="container" style="opacity:0;"></textarea>
